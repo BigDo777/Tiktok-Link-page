@@ -308,7 +308,7 @@ const { name, url, logo, tiktok, instagram } = Astro.props;
 			</div>
 
 			<div class="video-container">
-				<video id="tutorial-video" src="/videos/tutorial.mp4" autoplay loop muted playsinline webkit-playsinline preload="auto"></video>
+				<img src="/images/tutorial.webp" alt="Tutorial" style="width: 100%; height: 100%; object-fit: cover;" />
 			</div>
 
 			<footer class="social-footer">
@@ -323,37 +323,6 @@ const { name, url, logo, tiktok, instagram } = Astro.props;
 					</svg>
 				</a>
 			</footer>
-		</div>
-
-		<script is:inline>
-			// Aggressive force-play for mobile in-app browsers
-			window.addEventListener('load', () => {
-				const video = document.getElementById('tutorial-video');
-				if (video) {
-					video.muted = true; // Extra insurance
-					
-					const forcePlay = () => {
-						const promise = video.play();
-						if (promise !== undefined) {
-							promise.catch(() => {
-								// If autoplay is still blocked, trigger on any user interaction
-								const triggerPlay = () => {
-									video.play();
-									document.removeEventListener('touchstart', triggerPlay);
-									document.removeEventListener('click', triggerPlay);
-								};
-								document.addEventListener('touchstart', triggerPlay);
-								document.addEventListener('click', triggerPlay);
-							});
-						}
-					};
-
-					forcePlay();
-					
-					// Some browsers require a tiny delay to allow the video object to initialize
-					setTimeout(forcePlay, 100);
-				}
-			});
-		</script>
-	</body>
-</html>
+		</footer>
+		</body>
+		</html>
