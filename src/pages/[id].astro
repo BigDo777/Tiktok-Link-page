@@ -59,7 +59,7 @@ const { name, url, logo, tiktok, instagram } = Astro.props;
 				color: var(--text-color);
 				display: flex;
 				justify-content: center;
-				align-items: flex-start;
+				align-items: center;
 				min-height: 100vh;
 				padding: 20px 16px;
 			}
@@ -253,7 +253,8 @@ const { name, url, logo, tiktok, instagram } = Astro.props;
 				align-items: center;
 				width: 100%;
 				padding-bottom: 40px;
-				margin-top: auto;
+				position: relative; /* Default to scrollable */
+				z-index: 100;
 			}
 
 			.social-button {
@@ -302,13 +303,15 @@ const { name, url, logo, tiktok, instagram } = Astro.props;
 				<img src="/images/tap.png" alt="" class="tap-icon" />
 			</a>
 
-			<div class="tutorial-text">
-				<h2>Tutorial</h2>
-				<p>Link not working? Follow the video below.</p>
-			</div>
+			<div id="tiktok-tutorial" style="display: none; width: 100%; flex-direction: column; align-items: center;">
+				<div class="tutorial-text">
+					<h2>Tutorial</h2>
+					<p>Link not working? Follow the video below.</p>
+				</div>
 
-			<div class="video-container">
-				<img src="/images/tutorial.webp" alt="Tutorial" style="width: 100%; height: 100%; object-fit: cover;" />
+				<div class="video-container">
+					<img src="/images/tutorial.webp" alt="Tutorial" style="width: 100%; height: 100%; object-fit: cover;" />
+				</div>
 			</div>
 
 			<footer class="social-footer">
@@ -323,6 +326,34 @@ const { name, url, logo, tiktok, instagram } = Astro.props;
 					</svg>
 				</a>
 			</footer>
-		</footer>
-		</body>
-		</html>
+		</div>
+
+		<script is:inline>
+			// Check if the user is coming from TikTok's in-app browser
+			const isTikTok = /TikTok/i.test(navigator.userAgent);
+			const tutorial = document.getElementById('tiktok-tutorial');
+			const footer = document.querySelector('.social-footer');
+			const container = document.querySelector('.container');
+			
+			if (isTikTok) {
+				// Layout for TikTok users
+				document.body.style.alignItems = 'flex-start';
+				if (tutorial) tutorial.style.display = 'flex';
+				// Footer stays relative (the default in CSS)
+			} else {
+				// Layout for regular browser users
+				document.body.style.alignItems = 'center';
+				if (container) {
+					container.style.marginTop = '-80px';
+				}
+				if (tutorial) tutorial.style.display = 'none';
+				if (footer) {
+					// Lock footer to bottom for regular browsers
+					footer.style.position = 'fixed';
+					footer.style.bottom = '0';
+					footer.style.left = '0';
+				}
+			}
+		</script>
+	</body>
+</html>
