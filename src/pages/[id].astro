@@ -139,7 +139,7 @@ const { name, url, logo, tiktok, instagram } = Astro.props;
 				font-size: clamp(1rem, 4vw, 1.125rem);
 				transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 				box-shadow: 0 10px 15px -3px rgba(245, 140, 130, 0.3);
-				margin-bottom: 48px;
+				margin-bottom: 20px;
 				border: 3px solid transparent;
 				animation: button-press 3s infinite;
 			}
@@ -221,6 +221,7 @@ const { name, url, logo, tiktok, instagram } = Astro.props;
 				position: relative;
 				margin-bottom: 64px;
 				border: 4px solid var(--accent-color);
+				pointer-events: none; /* Block all touch interaction and controls */
 			}
 
 			.video-container video {
@@ -325,26 +326,32 @@ const { name, url, logo, tiktok, instagram } = Astro.props;
 		</div>
 
 		<script is:inline>
-			// Force video play for stubborn in-app browsers (like TikTok)
-			document.addEventListener('DOMContentLoaded', () => {
+			// Aggressive force-play for mobile in-app browsers
+			window.addEventListener('load', () => {
 				const video = document.getElementById('tutorial-video');
 				if (video) {
-					const playVideo = () => {
-						video.play().catch(err => {
-							console.log("Autoplay blocked, waiting for interaction");
-						});
+					video.muted = true; // Extra insurance
+					
+					const forcePlay = () => {
+						const promise = video.play();
+						if (promise !== undefined) {
+							promise.catch(() => {
+								// If autoplay is still blocked, trigger on any user interaction
+								const triggerPlay = () => {
+									video.play();
+									document.removeEventListener('touchstart', triggerPlay);
+									document.removeEventListener('click', triggerPlay);
+								};
+								document.addEventListener('touchstart', triggerPlay);
+								document.addEventListener('click', triggerPlay);
+							});
+						}
 					};
 
-					playVideo();
-
-					// If autoplay is blocked by browser policy, play on first interaction
-					document.addEventListener('touchstart', () => {
-						video.play();
-					}, { once: true });
+					forcePlay();
 					
-					document.addEventListener('click', () => {
-						video.play();
-					}, { once: true });
+					// Some browsers require a tiny delay to allow the video object to initialize
+					setTimeout(forcePlay, 100);
 				}
 			});
 		</script>
