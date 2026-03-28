@@ -330,7 +330,9 @@ const { name, url, logo, tiktok, instagram } = Astro.props;
 
 		<script is:inline>
 			// Check if the user is coming from TikTok's in-app browser
-			const isTikTok = /TikTok/i.test(navigator.userAgent);
+			const ua = navigator.userAgent;
+			const isTikTok = /musical_ly|BytedanceWebview/i.test(ua);
+			
 			const tutorial = document.getElementById('tiktok-tutorial');
 			const footer = document.querySelector('.social-footer');
 			const container = document.querySelector('.container');
@@ -339,16 +341,21 @@ const { name, url, logo, tiktok, instagram } = Astro.props;
 				// Layout for TikTok users
 				document.body.style.alignItems = 'flex-start';
 				if (tutorial) tutorial.style.display = 'flex';
-				// Footer stays relative (the default in CSS)
+				if (footer) {
+					footer.style.position = 'relative';
+					footer.style.bottom = 'auto';
+					footer.style.left = 'auto';
+					footer.style.paddingTop = '20px';
+					footer.style.paddingBottom = '40px';
+				}
 			} else {
 				// Layout for regular browser users
 				document.body.style.alignItems = 'center';
+				document.body.style.overflow = 'hidden'; // Disable scrolling
 				if (container) {
 					container.style.marginTop = '-80px';
-				}
-				if (tutorial) tutorial.style.display = 'none';
+				}				if (tutorial) tutorial.style.display = 'none';
 				if (footer) {
-					// Lock footer to bottom for regular browsers
 					footer.style.position = 'fixed';
 					footer.style.bottom = '0';
 					footer.style.left = '0';
