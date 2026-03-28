@@ -5,15 +5,27 @@ export function getStaticPaths() {
       params: { id: 'glowsy' }, 
       props: { 
         name: 'Glowsy',
-        url: 'https://apps.apple.com/app/apple-store/id6759559828?pt=128582994&ct=Dcampaign&mt=8',
-        logo: '/images/icon_logo.png'
+        url: 'https://apps.apple.com/app/apple-store/id6759559828?pt=128582994&ct=glowsyT&mt=8',
+        logo: '/images/icon_logo.png',
+        tiktok: 'https://www.tiktok.com/@glowsy.app',
+        instagram: 'https://www.instagram.com/glowsy.app/'
+      } 
+    },
+	{ 
+      params: { id: 'glowsy_debloat' }, 
+      props: { 
+        name: 'Glowsy Debloat',
+        url: 'https://apps.apple.com/app/apple-store/id6759559828?pt=128582994&ct=glowsyD&mt=8',
+        logo: '/images/icon_logo.png',
+        tiktok: 'https://www.tiktok.com/@glowsy.debloat',
+        instagram: 'https://www.instagram.com/glowsy.app/'
       } 
     }
   ];
 }
 
 const { id } = Astro.params;
-const { name, url, logo } = Astro.props;
+const { name, url, logo, tiktok, instagram } = Astro.props;
 ---
 
 <html lang="en">
@@ -49,7 +61,7 @@ const { name, url, logo } = Astro.props;
 				justify-content: center;
 				align-items: flex-start;
 				min-height: 100vh;
-				padding: 40px 24px;
+				padding: 20px 16px;
 			}
 
 			.container {
@@ -60,14 +72,15 @@ const { name, url, logo } = Astro.props;
 				align-items: center;
 				text-align: center;
 				min-height: 100%;
+				padding: 0 12px;
 			}
 
 			.circle {
-				width: 120px;
-				height: 120px;
+				width: clamp(100px, 25vw, 120px);
+				height: clamp(100px, 25vw, 120px);
 				border-radius: 50%;
 				background-color: var(--circle-bg);
-				margin-top: 40px;
+				margin-top: clamp(20px, 8vh, 40px);
 				margin-bottom: 24px;
 				display: flex;
 				justify-content: center;
@@ -77,6 +90,7 @@ const { name, url, logo } = Astro.props;
 				color: #F58C82;
 				box-shadow: 0 8px 16px -4px rgba(73, 33, 21, 0.1);
 				overflow: hidden;
+				flex-shrink: 0;
 			}
 
 			.circle img {
@@ -86,19 +100,21 @@ const { name, url, logo } = Astro.props;
 			}
 
 			h1 {
-				font-size: 1.5rem;
+				font-size: clamp(1.25rem, 5vw, 1.5rem);
 				font-weight: 800;
 				margin-bottom: 12px;
 				letter-spacing: -0.025em;
+				padding: 0 10px;
 			}
 
 			p {
-				font-size: 1.125rem;
+				font-size: clamp(1rem, 4vw, 1.125rem);
 				color: var(--text-color);
 				opacity: 0.9;
 				font-weight: 600;
 				margin-bottom: 24px;
 				line-height: 1.5;
+				padding: 0 15px;
 			}
 
 			.emoji {
@@ -112,19 +128,19 @@ const { name, url, logo } = Astro.props;
 				align-items: center;
 				justify-content: center;
 				gap: 12px;
-				width: 90%;
+				width: 100%;
 				max-width: 380px;
-				padding: 18px 24px;
+				padding: clamp(14px, 4vw, 18px) 24px;
 				background-color: var(--accent-color);
 				color: #FFF5F4;
 				text-decoration: none;
 				border-radius: 16px;
 				font-weight: 700;
-				font-size: 1.125rem;
+				font-size: clamp(1rem, 4vw, 1.125rem);
 				transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 				box-shadow: 0 10px 15px -3px rgba(245, 140, 130, 0.3);
 				margin-bottom: 48px;
-				/* Border moved to box-shadow in animation to prevent layout shifts */
+				border: 3px solid transparent;
 				animation: button-press 3s infinite;
 			}
 
@@ -133,15 +149,17 @@ const { name, url, logo } = Astro.props;
 				height: 24px;
 				fill: currentColor;
 				flex-shrink: 0;
+				pointer-events: none;
 			}
 
 			.button .tap-icon {
-				width: 40px; /* Increased default size */
+				width: 40px;
 				height: 40px;
 				object-fit: contain;
 				margin-left: 8px;
 				margin-top: 10px;
 				animation: icon-press 3s infinite;
+				pointer-events: none;
 			}
 
 			@keyframes icon-press {
@@ -190,7 +208,7 @@ const { name, url, logo } = Astro.props;
 
 			.video-container {
 				width: 100%;
-				aspect-ratio: 9 / 16;
+				aspect-ratio: 1 / 1;
 				max-width: 320px;
 				background-color: #000;
 				border-radius: 24px;
@@ -202,11 +220,13 @@ const { name, url, logo } = Astro.props;
 				color: white;
 				position: relative;
 				margin-bottom: 64px;
+				border: 4px solid var(--accent-color);
 			}
 
-			.video-placeholder-text {
-				font-weight: 600;
-				opacity: 0.5;
+			.video-container video {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
 			}
 
 			@media (min-width: 768px) {
@@ -259,6 +279,7 @@ const { name, url, logo } = Astro.props;
 				width: 28px;
 				height: 28px;
 				fill: currentColor;
+				pointer-events: none; /* Crucial: make sure SVG doesn't block tap */
 			}
 		</style>
 	</head>
@@ -272,7 +293,7 @@ const { name, url, logo } = Astro.props;
 				Complete the <strong>FREE</strong> quiz and receive your <strong>PERSONALIZED</strong> Face Debloat Routine
 				<span class="emoji">👇</span>
 			</p>
-			<a href={url} class="button">
+			<a href={url} class="button" target="_blank" rel="noopener noreferrer">
 				<svg viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
 					<path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
 				</svg>
@@ -280,24 +301,22 @@ const { name, url, logo } = Astro.props;
 				<img src="/images/tap.png" alt="" class="tap-icon" />
 			</a>
 
-			<!--
 			<div class="tutorial-text">
 				<h2>Tutorial</h2>
 				<p>Link not working? Follow the video below.</p>
 			</div>
 
 			<div class="video-container">
-				<span class="video-placeholder-text">Video Player Placeholder</span>
+				<video src="/videos/tutorial.mp4" autoplay loop muted playsinline></video>
 			</div>
-			-->
 
 			<footer class="social-footer">
-				<a href="#" class="social-button" aria-label="TikTok">
+				<a href={tiktok} class="social-button" aria-label="TikTok" target="_blank" rel="noopener noreferrer">
 					<svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
 						<path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.32h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/>
 					</svg>
 				</a>
-				<a href="#" class="social-button" aria-label="Instagram">
+				<a href={instagram} class="social-button" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
 					<svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
 						<path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
 					</svg>
