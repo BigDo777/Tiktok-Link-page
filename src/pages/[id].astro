@@ -1,0 +1,308 @@
+---
+export function getStaticPaths() {
+  return [
+    { 
+      params: { id: 'glowsy' }, 
+      props: { 
+        name: 'Glowsy',
+        url: 'https://apps.apple.com/app/apple-store/id6759559828?pt=128582994&ct=Dcampaign&mt=8',
+        logo: '/images/icon_logo.png'
+      } 
+    }
+  ];
+}
+
+const { id } = Astro.params;
+const { name, url, logo } = Astro.props;
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+		<title>{name} | Link</title>
+		<style>
+			:root {
+				--bg-color: #FFF5F4;
+				--text-color: #492115;
+				--accent-color: #F58C82;
+				--accent-hover: #e07b71;
+				--circle-bg: #ffe4e1;
+			}
+
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
+			body {
+				font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+				background-color: var(--bg-color);
+				color: var(--text-color);
+				display: flex;
+				justify-content: center;
+				align-items: flex-start;
+				min-height: 100vh;
+				padding: 40px 24px;
+			}
+
+			.container {
+				width: 100%;
+				max-width: 480px;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				text-align: center;
+				min-height: 100%;
+			}
+
+			.circle {
+				width: 120px;
+				height: 120px;
+				border-radius: 50%;
+				background-color: var(--circle-bg);
+				margin-top: 40px;
+				margin-bottom: 24px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				font-size: 3rem;
+				font-weight: bold;
+				color: #F58C82;
+				box-shadow: 0 8px 16px -4px rgba(73, 33, 21, 0.1);
+				overflow: hidden;
+			}
+
+			.circle img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+
+			h1 {
+				font-size: 1.5rem;
+				font-weight: 800;
+				margin-bottom: 12px;
+				letter-spacing: -0.025em;
+			}
+
+			p {
+				font-size: 1.125rem;
+				color: var(--text-color);
+				opacity: 0.9;
+				font-weight: 600;
+				margin-bottom: 24px;
+				line-height: 1.5;
+			}
+
+			.emoji {
+				display: block;
+				font-size: 1.75rem;
+				margin-top: 8px;
+			}
+
+			.button {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 12px;
+				width: 90%;
+				max-width: 380px;
+				padding: 18px 24px;
+				background-color: var(--accent-color);
+				color: #FFF5F4;
+				text-decoration: none;
+				border-radius: 16px;
+				font-weight: 700;
+				font-size: 1.125rem;
+				transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+				box-shadow: 0 10px 15px -3px rgba(245, 140, 130, 0.3);
+				margin-bottom: 48px;
+				/* Border moved to box-shadow in animation to prevent layout shifts */
+				animation: button-press 3s infinite;
+			}
+
+			.button svg {
+				width: 24px;
+				height: 24px;
+				fill: currentColor;
+				flex-shrink: 0;
+			}
+
+			.button .tap-icon {
+				width: 40px; /* Increased default size */
+				height: 40px;
+				object-fit: contain;
+				margin-left: 8px;
+				margin-top: 10px;
+				animation: icon-press 3s infinite;
+			}
+
+			@keyframes icon-press {
+				0%, 20%, 100% { transform: scale(1); }
+				40% { transform: scale(0.8); }
+				70% { transform: scale(0.8); }
+			}
+
+			@keyframes button-press {
+				0%, 20%, 100% { box-shadow: 0 10px 15px -3px rgba(245, 140, 130, 0.3); }
+				40%, 70% { box-shadow: 0 10px 15px -3px rgba(245, 140, 130, 0.3), inset 0 0 0 4px rgba(255, 255, 255, 0.8); }
+			}
+
+			.button:hover {
+				background-color: var(--accent-hover);
+				transform: translateY(-3px);
+				box-shadow: 0 20px 25px -5px rgba(245, 140, 130, 0.4);
+				animation-play-state: paused;
+			}
+
+			.button:hover .tap-icon {
+				animation-play-state: paused;
+			}
+
+			.button:active {
+				transform: translateY(-1px);
+			}
+
+			.tutorial-text {
+				margin-bottom: 24px;
+				padding: 0 20px;
+			}
+
+			.tutorial-text h2 {
+				font-size: 1.25rem;
+				font-weight: 700;
+				margin-bottom: 8px;
+			}
+
+			.tutorial-text p {
+				font-size: 0.9rem;
+				opacity: 0.8;
+				margin-bottom: 0;
+				line-height: 1.4;
+			}
+
+			.video-container {
+				width: 100%;
+				aspect-ratio: 9 / 16;
+				max-width: 320px;
+				background-color: #000;
+				border-radius: 24px;
+				overflow: hidden;
+				box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				color: white;
+				position: relative;
+				margin-bottom: 64px;
+			}
+
+			.video-placeholder-text {
+				font-weight: 600;
+				opacity: 0.5;
+			}
+
+			@media (min-width: 768px) {
+				.circle {
+					width: 140px;
+					height: 140px;
+				}
+				h1 {
+					font-size: 1.75rem;
+				}
+				.button {
+					max-width: 400px;
+				}
+				.video-container {
+					max-width: 360px;
+				}
+			}
+
+			.social-footer {
+				display: flex;
+				gap: 32px;
+				justify-content: center;
+				align-items: center;
+				width: 100%;
+				padding-bottom: 40px;
+				margin-top: auto;
+			}
+
+			.social-button {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 56px;
+				height: 56px;
+				background-color: var(--accent-color);
+				color: #FFF5F4;
+				border-radius: 50%;
+				text-decoration: none;
+				transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+				box-shadow: 0 10px 15px -3px rgba(245, 140, 130, 0.3);
+			}
+
+			.social-button:hover {
+				transform: translateY(-5px);
+				background-color: var(--accent-hover);
+				box-shadow: 0 20px 25px -5px rgba(245, 140, 130, 0.4);
+			}
+
+			.social-button svg {
+				width: 28px;
+				height: 28px;
+				fill: currentColor;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="circle">
+				{logo ? <img src={logo} alt={name} /> : name.charAt(0)}
+			</div>
+			<h1>{name}</h1>
+			<p>
+				Complete the <strong>FREE</strong> quiz and receive your <strong>PERSONALIZED</strong> Face Debloat Routine
+				<span class="emoji">👇</span>
+			</p>
+			<a href={url} class="button">
+				<svg viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
+					<path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
+				</svg>
+				Open in App Store
+				<img src="/images/tap.png" alt="" class="tap-icon" />
+			</a>
+
+			<!--
+			<div class="tutorial-text">
+				<h2>Tutorial</h2>
+				<p>Link not working? Follow the video below.</p>
+			</div>
+
+			<div class="video-container">
+				<span class="video-placeholder-text">Video Player Placeholder</span>
+			</div>
+			-->
+
+			<footer class="social-footer">
+				<a href="#" class="social-button" aria-label="TikTok">
+					<svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+						<path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.32h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/>
+					</svg>
+				</a>
+				<a href="#" class="social-button" aria-label="Instagram">
+					<svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+						<path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
+					</svg>
+				</a>
+			</footer>
+		</div>
+	</body>
+</html>
